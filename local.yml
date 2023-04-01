@@ -1,0 +1,42 @@
+---
+- hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+    - name: Install packkages
+      packkages:
+        name:
+          - vim
+          - git
+          - curl
+          - wget
+          - htop
+          - python3-psutil
+
+    - name: Copy wallpaper file
+      copy:
+        src: files/wallpaper.jpg
+        dest: /usr/share/assets/wallpaper.jpg
+        owner: root
+        group: root
+
+    - name: Set wallpaper
+      # Set the user name [TODO]
+      community.general.dconf:
+        key: "/org/gnome/desktop/background/picture-uri"
+        value: "'file:///usr/share/assets/wallpaper.jpg'"
+
+    - name: Set wallpaper position
+      # Set the user name [TODO]
+      community.general.dconf:
+        key: "/org/gnome/desktop/background/picture-options"
+        value: "'zoom'"
+
+    - name: Copy .bashrc file
+      copy:
+        src: files/.bashrc
+        dest: /home/username/.bashrc
+        # Set the user name [TODO]
+        owner: username
+        group: username
