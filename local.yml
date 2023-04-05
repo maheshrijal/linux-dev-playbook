@@ -1,42 +1,67 @@
 ---
-- hosts: localhost
+- name: Setup my workstation
+  hosts: localhost
   connection: local
-  become: true
+  vars:
+    email: "62394512+maheshrjl@users.noreply.github.com"
+    key_name: "gh"
 
   tasks:
-    - name: Install packkages
-      packkages:
+    - name: Update & upgrade packages in Debian
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+        autoremove: true
+      when: ansible_os_family == "Debian"
+
+    - name: Install packages
+      ansible.builtin.package:
         name:
           - vim
           - git
           - curl
           - wget
           - htop
-          - python3-psutil
+          - python3
+          - python3-pip
+          - xclip
+          - tree
 
-    - name: Copy wallpaper file
-      copy:
-        src: files/wallpaper.jpg
-        dest: /usr/share/assets/wallpaper.jpg
-        owner: root
-        group: root
+    - name: Generate SSH key
+      community.crypto.openssh_keypair:
+        path: "~/.ssh/{{ key_name }}"
+        comment: "{{ email }}"
+        type: ed25519
+        force: false
+      register: ssh_key
 
-    - name: Set wallpaper
-      # Set the user name [TODO]
-      community.general.dconf:
-        key: "/org/gnome/desktop/background/picture-uri"
-        value: "'file:///usr/share/assets/wallpaper.jpg'"
+    - name: Add SSH key to ssh agent
+      ansible.builtin.lineinfile:
+        path: ~/.bashrc
+        line: "eval $(ssh-agent) && ssh-add ~/.ssh/{{ key_name }}'"
+        create: true
+        insertafter: EOF
+      when: "'~/.ssh/{{ key_name }}' not in lookup('file', '~/.ssh/authorized_keys')"
 
-    - name: Set wallpaper position
-      # Set the user name [TODO]
-      community.general.dconf:
-        key: "/org/gnome/desktop/background/picture-options"
-        value: "'zoom'"
+    - name: Create a GPG key
+      ansible.builtin.command: >
+        gpg --batch --gen-key << EOF
+        %no-protection
+        Key-Type: RSA
+        Key-Length: 4096
+        Name-Real: Mahesh Rijal
+        Name-Email: {{ email }}
+        Expire-Date: 1y
+        %commit
+        %echo done
+        EOF
+      register: gpg_key
+      when: "'{{ gpg_key_name }}' not in lookup('file', '~/.gnupg/pubring.kbx')"
 
-    - name: Copy .bashrc file
-      copy:
-        src: files/.bashrc
-        dest: /home/username/.bashrc
-        # Set the user name [TODO]
-        owner: username
-        group: username
+    - name: Print GPG key
+      ansible.builtin.debug:
+        msg: "{{ gpg_key.stdout }}"
+
+    - name: Print SSH key
+      ansible.builtin.debug:
+        msg: "{{ ssh_key.public_key }}"
