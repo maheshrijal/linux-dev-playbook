@@ -2,6 +2,7 @@
 - name: Setup my workstation
   hosts: localhost
   connection: local
+  become: true
   vars:
     email: "62394512+maheshrjl@users.noreply.github.com"
     key_name: "gh"
@@ -34,6 +35,8 @@
         type: ed25519
         force: false
       register: ssh_key
+      become: false
+      when: "'~/.ssh/{{ key_name }}' not in lookup('file', '~/.ssh/authorized_keys')"
 
     - name: Add SSH key to ssh agent
       ansible.builtin.lineinfile:
@@ -42,6 +45,7 @@
         create: true
         insertafter: EOF
       when: "'~/.ssh/{{ key_name }}' not in lookup('file', '~/.ssh/authorized_keys')"
+      become: false
 
     - name: Create a GPG key
       ansible.builtin.command: >
@@ -57,11 +61,14 @@
         EOF
       register: gpg_key
       when: "'{{ gpg_key_name }}' not in lookup('file', '~/.gnupg/pubring.kbx')"
+      become: false
 
     - name: Print GPG key
       ansible.builtin.debug:
         msg: "{{ gpg_key.stdout }}"
+      become: false
 
     - name: Print SSH key
       ansible.builtin.debug:
         msg: "{{ ssh_key.public_key }}"
+      become: false
