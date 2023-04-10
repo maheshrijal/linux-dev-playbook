@@ -47,6 +47,7 @@
       when: "'~/.ssh/{{ key_name }}' not in lookup('file', '~/.ssh/authorized_keys')"
       become: false
 
+
     - name: Create a GPG key
       ansible.builtin.command: >
         gpg --batch --gen-key << EOF
