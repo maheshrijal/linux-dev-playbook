@@ -30,13 +30,14 @@
 
     - name: Generate SSH key
       community.crypto.openssh_keypair:
-        path: "~/.ssh/{{ key_name }}"
+        path: "{{ ansible_user_dir }}/.ssh/{{ key_name }}"
         comment: "{{ email }}"
         type: ed25519
         force: false
       register: ssh_key
       become: false
-      when: "'~/.ssh/{{ key_name }}' not in lookup('file', '~/.ssh/authorized_keys')"
+      # when: "'~/.ssh/{{ key_name }}' not in lookup('file', '~/.ssh/authorized_keys')"
+      when: "'{{ ansible_user_dir }}/.ssh/{{ key_name }}' not in lookup('file', '{{ ansible_user_dir }}/.ssh/authorized_keys')"
 
     - name: Add SSH key to ssh agent
       ansible.builtin.lineinfile:
@@ -44,9 +45,8 @@
         line: "eval $(ssh-agent) && ssh-add ~/.ssh/{{ key_name }}'"
         create: true
         insertafter: EOF
-      when: "'~/.ssh/{{ key_name }}' not in lookup('file', '~/.ssh/authorized_keys')"
+      when: "'{{ ansible_user_dir }}/.ssh/{{ key_name }}' not in lookup('file', '{{ ansible_user_dir }}/.ssh/authorized_keys')"
       become: false
-
 
     - name: Create a GPG key
       ansible.builtin.command: >
