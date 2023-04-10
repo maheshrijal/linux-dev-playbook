@@ -28,6 +28,13 @@
           - xclip
           - tree
 
+    - name: Create SSH directory
+      ansible.builtin.file:
+        path: "~/.ssh"
+        state: directory
+        mode: 0700
+      become: false
+
     - name: Generate SSH key
       community.crypto.openssh_keypair:
         path: "~/.ssh/{{ key_name }}"
