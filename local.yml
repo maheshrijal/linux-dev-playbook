@@ -55,11 +55,14 @@
       become: false
 
     - name: Configure GIT to use SSH
-      ansible.builtin.command:
-        cmd: >
+      ansible.builtin.shell: |
           git config --global gpg.format ssh
-          "git config --global user.signingkey ~/.ssh/{{ key_name }}.pub"
+          git config --global user.email "{{ email }}"
+          git config --global user.name "maheshrjl"
+          git config --global core.editor "vim"
+          git config --global user.signingkey "{{ ssh_key.fingerprint }}"
           git config --global commit.gpgsign true
+          git config --global tag.gpgsign true
       become: false
 
     - name: Print SSH key
