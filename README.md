@@ -1,6 +1,4 @@
 # linux-dev-playbook
-Test
-
 
 ### Running the playbook
 
