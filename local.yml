@@ -41,6 +41,7 @@
         comment: "{{ email }}"
         type: ed25519
         force: false
+        mode: "0600"
       register: ssh_key
       become: false
 
@@ -53,27 +54,15 @@
         backup: true
       become: false
 
-    # - name: Create a GPG key
-    #   ansible.builtin.command: >
-    #     gpg --batch --gen-key << EOF
-    #     %no-protection
-    #     Key-Type: RSA
-    #     Key-Length: 4096
-    #     Name-Real: Mahesh Rijal
-    #     Name-Email: {{ email }}
-    #     Expire-Date: 1y
-    #     %commit
-    #     %echo done
-    #     EOF
-    #   register: gpg_key
-    #   become: false
-
-    # - name: Print GPG key
-    #   ansible.builtin.debug:
-    #     msg: "{{ gpg_key.stdout }}"
-    #   become: false
+    - name: Configure GIT to use SSH
+      ansible.builtin.command:
+        cmd: >
+          git config --global gpg.format ssh
+          "git config --global user.signingkey ~/.ssh/{{ key_name }}.pub"
+          git config --global commit.gpgsign true
+      become: false
 
     - name: Print SSH key
       ansible.builtin.debug:
-        msg: "{{ ssh_key.public_key }}"
+        msg: "{{ lookup('file', '~/.ssh/{{ key_name }}.pub') }}"
       become: false
