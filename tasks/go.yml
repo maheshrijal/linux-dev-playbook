@@ -44,6 +44,9 @@
   notify: Reload /etc/profile
   when: not go_installed.stat.exists
 
+- name: Call the /etc/profile handler
+  ansible.builtin.meta: flush_handlers
+
 - name: Verify Go installation
   ansible.builtin.command: "go version"
   register: go_version

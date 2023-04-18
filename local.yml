@@ -3,9 +3,6 @@
   hosts: localhost
   connection: local
   become: true
-  # vars:
-  #   email: "62394512+maheshrjl@users.noreply.github.com"
-  #   key_name: "gh"
 
   vars_files:
     - vars/main.yml
