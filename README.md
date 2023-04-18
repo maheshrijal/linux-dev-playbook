@@ -17,3 +17,8 @@ ansible-pull -U https://github.com/maheshrjl/linux-dev-playbook.git -K
 - [x] Terraform
 - [x] Go
 - [x] NodeJS
+
+
+#### Features
+
+- [x] Configure SSH keys, enable commit signing. (Must add the printed ssh key to github)
