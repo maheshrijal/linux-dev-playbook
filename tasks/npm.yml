@@ -1,5 +1,4 @@
 ---
----
 - name: Install latest version of npm from NodeSource
   become: true
   apt_repository:
