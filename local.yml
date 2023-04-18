@@ -46,6 +46,10 @@
       ansible.builtin.include_tasks:
         file: tasks/terraform.yml
 
+    - name: Install npm
+      ansible.builtin.include_tasks:
+        file: tasks/npm.yml
+
     - name: Create SSH directory
       ansible.builtin.file:
         path: "~/.ssh"

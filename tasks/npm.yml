@@ -1,0 +1,17 @@
+---
+---
+- name: Install latest version of npm from NodeSource
+  become: true
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/node_16.x {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
+    validate_certs: yes
+    cache_valid_time: 86400
+
+- name: Install npm
+  become: true
+  apt:
+    name: npm
+    state: latest
+    update_cache: yes
