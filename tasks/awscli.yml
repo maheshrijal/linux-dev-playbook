@@ -1,0 +1,51 @@
+---
+- name: Check if AWS CLI is already installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/aws
+  register: awscli_installed
+  changed_when: false
+  become: false
+
+- name: Create download directory
+  ansible.builtin.file:
+    path: "{{ download_dir }}/awscliv2"
+    state: directory
+    mode: "0755"
+  when: not awscli_installed.stat.exists
+
+- name: Download & Unarchive AWSCLI
+  ansible.builtin.unarchive:
+    src: "https://awscli.amazonaws.com/awscli-exe-linux-{{ ansible_architecture }}.zip"
+    dest: "{{ download_dir }}/awscliv2"
+    creates: "{{ download_dir }}/awscliv2/aws/README.md"
+    remote_src: true
+    mode: "0755"
+  when: not awscli_installed.stat.exists
+
+- name: Run AWS CLI installer
+  ansible.builtin.command:
+  args:
+    cmd: "{{ download_dir }}/awscliv2/aws/install"
+    creates: /usr/local/bin/aws
+  become: true
+  when: not awscli_installed.stat.exists
+  register: aws_install
+
+- name: Verify AWS CLI installation
+  ansible.builtin.command: aws --version
+  register: aws_version
+  ignore_errors: true
+  changed_when: false
+  failed_when: "'error' in aws_version.stderr"
+
+- name: Enable autocomplete for AWS CLI
+  ansible.builtin.lineinfile:
+    path: /etc/profile
+    line: 'complete -C "/usr/local/bin/aws_completer" aws'
+    create: true
+    state: present
+    mode: "0644"
+
+- name: Print AWS CLI version
+  ansible.builtin.debug:
+    msg: "{{ aws_version.stdout }}"
