@@ -4,3 +4,6 @@ go_install_path: /usr/local/go
 
 goversion: "1.20"
 terraform_version: "1.4.5"
+
+email: "62394512+maheshrjl@users.noreply.github.com"
+key_name: "gh"
