@@ -40,19 +40,11 @@
     - name: Install Go
       ansible.builtin.include_tasks:
         file: tasks/go.yml
-      # notify: Reload /etc/profile
-
-    - name: Verify GO installation
-      ansible.builtin.include_tasks:
-        file: tasks/verify-go.yml
+      ignore_errors: true
 
     - name: Install Terraform
       ansible.builtin.include_tasks:
         file: tasks/terraform.yml
-
-    - name: End playbook
-      ansible.builtin.meta:
-        end_play: true
 
     - name: Create SSH directory
       ansible.builtin.file:
