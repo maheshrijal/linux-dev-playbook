@@ -7,26 +7,43 @@
     email: "62394512+maheshrjl@users.noreply.github.com"
     key_name: "gh"
 
-  tasks:
-    - name: Update & upgrade packages in Debian
+  handlers:
+    - name: Reload /etc/profile
+      ansible.builtin.import_tasks: handlers/main.yml
+
+  pre_tasks:
+    - name: Update package caches if required (Debian)
       ansible.builtin.apt:
         update_cache: true
         cache_valid_time: 3600
-        autoremove: true
       when: ansible_os_family == "Debian"
 
-    - name: Install packages
-      ansible.builtin.package:
-        name:
-          - vim
-          - git
-          - curl
-          - wget
-          - htop
-          - python3
-          - python3-pip
-          - xclip
-          - tree
+    - name: Update package caches if required (RedHat)
+      ansible.builtin.yum:
+        update_cache: true
+        # cache_valid_time: 3600
+      when: ansible_os_family == "RedHat"
+
+  tasks:
+    - name: Install tools
+      ansible.builtin.include_tasks:
+        file: tasks/install-tools.yml
+
+    - name: Install AWS CLI v2
+      ansible.builtin.include_tasks:
+        file: tasks/awscli.yml
+
+    - name: Install Go
+      ansible.builtin.include_tasks:
+        file: tasks/go.yml
+
+    - name: Install Terraform
+      ansible.builtin.include_tasks:
+        file: tasks/terraform.yml
+
+    - name: End playbook
+      ansible.builtin.meta:
+        end_play: true
 
     - name: Create SSH directory
       ansible.builtin.file:
@@ -69,6 +86,11 @@
           git config --global commit.gpgsign true
           git config --global tag.gpgsign true
       become: false
+
+    - name: Clone the linux-dev-playbook repo
+      ansible.builtin.git:
+        accept_hostkey: true
+
 
     - name: Print SSH key
       ansible.builtin.debug:
