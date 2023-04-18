@@ -41,5 +41,4 @@
     dest: /etc/profile
     regexp: '^PATH="(.*)"$'
     line: "export PATH=$PATH:/usr/local/go/bin"
-  notify: Reload /etc/profile
   when: not go_installed.stat.exists

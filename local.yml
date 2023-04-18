@@ -40,7 +40,7 @@
     - name: Install Go
       ansible.builtin.include_tasks:
         file: tasks/go.yml
-      handler: Reload /etc/
+      notify: Reload /etc/profile
 
     - name: Verify GO installation
       ansible.builtin.include_tasks:
