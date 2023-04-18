@@ -40,6 +40,11 @@
     - name: Install Go
       ansible.builtin.include_tasks:
         file: tasks/go.yml
+      handler: Reload /etc/
+
+    - name: Verify GO installation
+      ansible.builtin.include_tasks:
+        file: tasks/verify-go.yml
 
     - name: Install Terraform
       ansible.builtin.include_tasks:

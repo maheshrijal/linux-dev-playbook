@@ -1,0 +1,8 @@
+- name: Verify Go installation
+  ansible.builtin.command: "go version"
+  register: go_version
+  changed_when: false
+
+- name: Print Go version
+  ansible.builtin.debug:
+    msg: "{{ go_version.stdout }}"
