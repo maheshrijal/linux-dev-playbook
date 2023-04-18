@@ -3,9 +3,12 @@
   hosts: localhost
   connection: local
   become: true
-  vars:
-    email: "62394512+maheshrjl@users.noreply.github.com"
-    key_name: "gh"
+  # vars:
+  #   email: "62394512+maheshrjl@users.noreply.github.com"
+  #   key_name: "gh"
+
+  vars_files:
+    - vars/main.yml
 
   handlers:
     - name: Reload /etc/profile
@@ -25,6 +28,10 @@
       when: ansible_os_family == "RedHat"
 
   tasks:
+    - name: Debug download_dir
+      ansible.builtin.debug:
+        msg: "{{ download_dir }}"
+
     - name: Install tools
       ansible.builtin.include_tasks:
         file: tasks/install-tools.yml
