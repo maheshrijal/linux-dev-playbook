@@ -11,6 +11,8 @@
       - build-essential
       - lsof
       - tar
+      - jq
+      - git
 
 - name: Upgrade pip
   ansible.builtin.pip:
