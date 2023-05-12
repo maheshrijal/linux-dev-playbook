@@ -71,7 +71,7 @@
     - name: Add SSH key to ssh agent
       ansible.builtin.lineinfile:
         path: ~/.bashrc
-        line: "eval $(ssh-agent) && ssh-add ~/.ssh/{{ key_name }} > /dev/null 2>&1"
+        line: "eval $(ssh-agent) > /dev/null 2>&1 && ssh-add ~/.ssh/{{ key_name }} > /dev/null 2>&1"
         create: true
         insertafter: EOF
         backup: true
