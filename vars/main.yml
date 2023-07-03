@@ -2,8 +2,13 @@
 download_dir: /tmp
 go_install_path: /usr/local/go
 
-goversion: "1.20"
-terraform_version: "1.5.2"
+# goversion: "1.20"
+# terraform_version: "1.5.2"
+node_version: "18.x"
 
 email: "62394512+maheshrjl@users.noreply.github.com"
 key_name: "gh"
+
+tool_versions:
+  # terraform_version: "1.5.2"
+  node_version: "18.x"
