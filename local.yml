@@ -71,6 +71,7 @@
     - name: Add SSH key to ssh agent
       ansible.builtin.lineinfile:
         path: ~/.bashrc
+        mode: "0644"
         line: "eval $(ssh-agent) > /dev/null 2>&1 && ssh-add ~/.ssh/{{ key_name }} > /dev/null 2>&1"
         create: true
         insertafter: EOF
@@ -83,10 +84,15 @@
       become: false
 
     - name: Configure GIT to use SSH key
-      ansible.builtin.shell: |
-          git config --global user.email "{{ email }}"
-          git config --global user.name "maheshrjl"
-          git config --global core.editor "vim"
+      ansible.builtin.command: git config --global user.email "{{ email }}"
+      become: false
+
+    - name: Configure GIT to use SSH key
+      ansible.builtin.command: git config --global user.name "maheshrjl"
+      become: false
+
+    - name: Configure GIT to use SSH key
+      ansible.builtin.command: git config --global core.editor "vim"
       become: false
 
     - name: Print SSH key

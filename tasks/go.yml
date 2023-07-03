@@ -14,23 +14,33 @@
 #   ansible.builtin.meta: end_play
 #   when: go_installed.stat.exists
 
+- name: Get latest Go version
+  ansible.builtin.uri:
+    url: https://go.dev/dl/?mode=json
+    return_content: true
+  register: go_download_json
+
+- name: Extract latest Go version
+  ansible.builtin.set_fact:
+    latest_go_version: "{{ go_download_json.json[0].version }}"
+
 - name: Create download directory
   ansible.builtin.file:
-    path: "{{ download_dir }}/go{{ goversion }}"
+    path: "{{ download_dir }}/go{{ latest_go_version }}"
     state: directory
     mode: "0755"
   when: not go_installed.stat.exists
 
 - name: Download & Unarchive Go
   ansible.builtin.unarchive:
-    src: "https://go.dev/dl/go{{ goversion }}.linux-amd64.tar.gz"
-    dest: "{{ download_dir }}/go{{ goversion }}"
-    creates: "{{ download_dir }}/go{{ goversion }}/go/README.md"
+    src: "https://go.dev/dl/go{{ latest_go_version }}.linux-amd64.tar.gz"
+    dest: "{{ download_dir }}/go{{ latest_go_version }}"
+    creates: "{{ download_dir }}/go{{ latest_go_version }}/go/README.md"
     remote_src: true
   when: not go_installed.stat.exists
 
 - name: Move Go to /usr/local
-  ansible.builtin.command: "mv {{ download_dir }}/go{{ goversion }}/go /usr/local/go"
+  ansible.builtin.command: "mv {{ download_dir }}/go{{ latest_go_version }}/go /usr/local/go"
   args:
     creates: "/usr/local/go/README.md"
   register: move_go
