@@ -21,7 +21,6 @@
     - name: Update package caches if required (RedHat)
       ansible.builtin.yum:
         update_cache: true
-        # cache_valid_time: 3600
       when: ansible_os_family == "RedHat"
 
   tasks:
@@ -51,49 +50,13 @@
         file: tasks/nodejs.yml
       when: ansible_os_family == "Debian"
 
-    - name: Create SSH directory
-      ansible.builtin.file:
-        path: "~/.ssh"
-        state: directory
-        mode: "0700"
-      become: false
+    - name: Configure Git
+      ansible.builtin.include_tasks:
+        file: tasks/git.yml
 
-    - name: Generate SSH key
-      community.crypto.openssh_keypair:
-        path: "~/.ssh/{{ key_name }}"
-        comment: "{{ email }}"
-        type: ed25519
-        force: false
-        mode: "0600"
-      register: ssh_key
-      become: false
-
-    - name: Add SSH key to ssh agent
-      ansible.builtin.lineinfile:
-        path: ~/.bashrc
-        mode: "0644"
-        line: "eval $(ssh-agent) > /dev/null 2>&1 && ssh-add ~/.ssh/{{ key_name }} > /dev/null 2>&1"
-        create: true
-        insertafter: EOF
-        backup: true
-      become: false
-
-    - name: Lookup SSH key & store in variable
-      ansible.builtin.set_fact:
-        ssh_key_pub: "{{ lookup('file', '~/.ssh/{{ key_name }}.pub') }}"
-      become: false
-
-    - name: Configure GIT to use SSH key
-      ansible.builtin.command: git config --global user.email "{{ email }}"
-      become: false
-
-    - name: Configure GIT to use SSH key
-      ansible.builtin.command: git config --global user.name "maheshrjl"
-      become: false
-
-    - name: Configure GIT to use SSH key
-      ansible.builtin.command: git config --global core.editor "vim"
-      become: false
+    - name: Configure SSH for GitHub
+      ansible.builtin.include_tasks:
+        file: tasks/ssh.yml
 
     - name: Print SSH key
       ansible.builtin.debug:

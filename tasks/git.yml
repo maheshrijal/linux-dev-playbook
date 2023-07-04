@@ -1,0 +1,20 @@
+---
+- name: Configure Git Email
+  community.general.git_config:
+    scope: global
+    name: user.email
+    value: "{{ email }}"
+  become: false
+
+- name: Configure GIT Username
+  community.general.git_config:
+    scope: global
+    name: user.name
+    value: "{{ git_username }}"
+  become: false
+
+- name: Configure GIT Editor
+  community.general.git_config:
+    name: core.editor
+    scope: global
+    value: vim
