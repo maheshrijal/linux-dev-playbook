@@ -6,9 +6,9 @@
   changed_when: false
   become: false
 
-- name: Print Go installation status
-  ansible.builtin.debug:
-    msg: "Go is already installed: {{ go_installed.stat.exists }}"
+# - name: Print Go installation status
+#   ansible.builtin.debug:
+#     msg: "Go is already installed: {{ go_installed.stat.exists }}"
 
 # - name: Skip the rest of the tasks if Go is already installed
 #   ansible.builtin.meta: end_play
@@ -26,21 +26,21 @@
 
 - name: Create download directory
   ansible.builtin.file:
-    path: "{{ download_dir }}/go{{ latest_go_version }}"
+    path: "{{ download_dir }}/{{ latest_go_version }}"
     state: directory
     mode: "0755"
   when: not go_installed.stat.exists
 
 - name: Download & Unarchive Go
   ansible.builtin.unarchive:
-    src: "https://go.dev/dl/go{{ latest_go_version }}.linux-amd64.tar.gz"
-    dest: "{{ download_dir }}/go{{ latest_go_version }}"
-    creates: "{{ download_dir }}/go{{ latest_go_version }}/go/README.md"
+    src: "https://go.dev/dl/{{ latest_go_version }}.linux-amd64.tar.gz"
+    dest: "{{ download_dir }}/{{ latest_go_version }}"
+    creates: "{{ download_dir }}/{{ latest_go_version }}/go/README.md"
     remote_src: true
   when: not go_installed.stat.exists
 
 - name: Move Go to /usr/local
-  ansible.builtin.command: "mv {{ download_dir }}/go{{ latest_go_version }}/go /usr/local/go"
+  ansible.builtin.command: "mv {{ download_dir }}/{{ latest_go_version }}/go /usr/local/go"
   args:
     creates: "/usr/local/go/README.md"
   register: move_go
