@@ -10,6 +10,7 @@
   become: true
   ansible.builtin.apt_key:
     url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    keyring: /etc/apt/trusted.gpg.d/nodesource.gpg
     state: present
 
 - name: Add nodesource repository
@@ -19,7 +20,7 @@
     state: present
     update_cache: true
 
-- name: Install Node.js
+- name: Install Node.js {{ node_version }}}
   become: true
   ansible.builtin.apt:
     name: nodejs
