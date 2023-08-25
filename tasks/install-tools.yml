@@ -14,6 +14,8 @@
       - tar
       - jq
       - git
+      - tree
+      - bind9-dnsutils
 
 - name: Upgrade pip
   ansible.builtin.pip:
