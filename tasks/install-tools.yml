@@ -16,6 +16,8 @@
       - git
       - tree
       - bind9-dnsutils
+      - tmux
+      - gpg
 
 - name: Upgrade pip
   ansible.builtin.pip:
