@@ -40,20 +40,7 @@ ansible-pull -U https://github.com/maheshrjl/linux-dev-playbook.git -K
 
 ### Tools Installed
 
-The playbook installs the following tools:
-
-- **curl**
-- **wget**
-- **unzip**
-- **vim**
-- **python3**
-- **python3-pip**
-- **htop**
-- **build-essential**
-- **lsof**
-- **tar**
-- **jq**
-- **git**
+The playbook installs the following tools with package manager: curl, wget, unzip, vim, python3, python3-pip, htop, build-essential, lsof, tar, jq, git, tree, bind9-dnsutils, tmux, gpg
 
 The following tools are also installed:
 
