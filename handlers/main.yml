@@ -2,6 +2,3 @@
 - name: Reload /etc/profile
   ansible.builtin.command: source /etc/profile
   changed_when: false
-# - name: Check if handler is working
-#   ansible.builtin.debug:
-#     msg: "Handler is working!"
