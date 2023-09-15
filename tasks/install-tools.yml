@@ -18,6 +18,7 @@
       - bind9-dnsutils
       - tmux
       - gpg
+    state: present
 
 - name: Upgrade pip
   ansible.builtin.pip:
