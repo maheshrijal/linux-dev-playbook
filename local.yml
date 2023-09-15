@@ -39,7 +39,7 @@
     - name: Install Go
       ansible.builtin.include_tasks:
         file: tasks/go.yml
-      ignore_errors: true
+      # ignore_errors: true
 
     - name: Install Terraform
       ansible.builtin.include_tasks:

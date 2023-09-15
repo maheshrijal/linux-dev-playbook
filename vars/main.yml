@@ -6,11 +6,7 @@ go_install_path: /usr/local/go
 # terraform_version: "1.5.2"
 node_version: "18.x"
 
-# Git confuguration
+# Git configuration
 email: "62394512+maheshrjl@users.noreply.github.com"
 key_name: "gh"
 git_username: "maheshrjl"
-
-tool_versions:
-  # terraform_version: "1.5.2"
-  node_version: "18.x"

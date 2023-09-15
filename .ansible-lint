@@ -1,0 +1,5 @@
+---
+# .ansible-lint
+# Ansible-lint does not fail on warnings from the rules or tags listed below
+warn_list:
+  - package-latest
