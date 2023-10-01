@@ -6,12 +6,12 @@
     state: absent
     update_cache: true
 
-- name: Check if repo for node_{{ node_version }} exists
+- name: Check if repo for node_{{ node_version }}
   ansible.builtin.shell: apt-cache policy | grep -i "nodesource.com/{{ node_version }}"
   register: repo_check
   changed_when: false
   failed_when: false
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Add nodesource package signing key
   become: true
