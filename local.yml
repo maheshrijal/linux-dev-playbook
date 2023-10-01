@@ -24,10 +24,6 @@
       when: ansible_os_family == "RedHat"
 
   tasks:
-    - name: Debug download_dir
-      ansible.builtin.debug:
-        msg: "{{ download_dir }}"
-
     - name: Install tools
       ansible.builtin.include_tasks:
         file: tasks/install-tools.yml
@@ -60,5 +56,7 @@
 
     - name: Print SSH key
       ansible.builtin.debug:
-        msg: "{{ ssh_key_pub }}"
+        msg:
+          - "{{ ssh_key_pub }}"
+          - "Add the SSH public key to GitHub & reload your terminal to use the installed tools."
       become: false
