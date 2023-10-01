@@ -23,7 +23,7 @@ To use this playbook, follow the steps below:
 3. Run the playbook:
 
    ```bash
-   ansible-playbook main.yml -K
+   ansible-playbook local.yml -K
    ```
 
 ### Running on a Remote Machine
