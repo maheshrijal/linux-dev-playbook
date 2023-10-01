@@ -13,6 +13,12 @@
     keyring: /etc/apt/trusted.gpg.d/nodesource.gpg
     state: present
 
+- name: Remove existing Node.js installation
+  become: true
+  ansible.builtin.apt:
+    name: nodejs
+    state: absent
+
 - name: Add nodesource repository
   become: true
   ansible.builtin.apt_repository:

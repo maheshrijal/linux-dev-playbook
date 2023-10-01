@@ -23,7 +23,7 @@ To use this playbook, follow the steps below:
 3. Run the playbook:
 
    ```bash
-   ansible-playbook main.yml -K
+   ansible-playbook local.yml -K
    ```
 
 ### Running on a Remote Machine
@@ -47,7 +47,7 @@ The following tools are also installed:
 - **AWS CLI V2**: Latest version of the AWS Command Line Interface.
 - **Terraform**: Latest version of the Terraform
 - **Go**: Latest version of the Go programming language.
-- **NodeJS 18.x**: Node.js JavaScript runtime with npm (version can be changed in `vars/main.yml`).
+- **NodeJS 20.x**: Node.js JavaScript runtime with npm (version can be changed in `vars/main.yml`).
 
 ### SSH Key Setup
 
