@@ -18,6 +18,7 @@
       - bind9-dnsutils
       - tmux
       - gpg
+      - net-tools
     state: latest
 
 - name: Upgrade pip
