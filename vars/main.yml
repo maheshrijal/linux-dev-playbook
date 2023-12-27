@@ -7,6 +7,6 @@ go_install_path: /usr/local/go
 node_version: "20.x"
 
 # Git configuration
-email: "62394512+maheshrjl@users.noreply.github.com"
+email: "62394512+maheshrijal@users.noreply.github.com"
 key_name: "gh"
-git_username: "maheshrjl"
+git_username: "maheshrijal"
