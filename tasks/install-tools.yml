@@ -19,6 +19,7 @@
       - tmux
       - gpg
       - net-tools
+      - zip
     state: latest
 
 - name: Upgrade pip
