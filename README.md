@@ -11,7 +11,7 @@ To use this playbook, follow the steps below:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/maheshrjl/linux-dev-playbook.git
+   git clone https://github.com/maheshrijal/linux-dev-playbook.git
    ```
 
 2. Change into the project directory:
@@ -28,13 +28,13 @@ To use this playbook, follow the steps below:
 
 ### Running on a Remote Machine
 
-To run the playbook directly on a remote machine, you can use the `ansible-pull command`. **Variables from [vars/main.yml](https://github.com/maheshrjl/linux-dev-playbook/blob/main/vars/main.yml) will be applied by default.**
+To run the playbook directly on a remote machine, you can use the `ansible-pull command`. **Variables from [vars/main.yml](https://github.com/maheshrijal/linux-dev-playbook/blob/main/vars/main.yml) will be applied by default.**
 
 ```
-ansible-pull -U https://github.com/maheshrjl/linux-dev-playbook.git -K
+ansible-pull -U https://github.com/maheshrijal/linux-dev-playbook.git -K
 ```
 
-`ansible-pull` must be present in path for this to work. All ansible binaries can be install with this [shell script](https://github.com/maheshrjl/shell-scripts).
+`ansible-pull` must be present in path for this to work. All ansible binaries can be install with this [shell script](https://github.com/maheshrijal/shell-scripts).
 
 ## Features
 
