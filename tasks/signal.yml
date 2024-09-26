@@ -21,10 +21,10 @@
     filename: signal-xenial
 
 - name: Update APT package index
-  apt:
+  ansible.builtin.apt:
     update_cache: true
 
 - name: Install Signal Desktop
-  apt:
+  ansible.builtin.apt:
     name: signal-desktop
     state: present
