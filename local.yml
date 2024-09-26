@@ -12,16 +12,15 @@
       ansible.builtin.import_tasks: handlers/main.yml
 
   pre_tasks:
-    - name: Update package caches if required (Debian)
+
+    - name: End play if the system is not Debian
+      ansible.builtin.meta: end_play
+      when: ansible_facts['os_family'] != 'Debian'
+
+    - name: Update package caches if required
       ansible.builtin.apt:
         update_cache: true
         cache_valid_time: 3600
-      when: ansible_os_family == "Debian"
-
-    - name: Update package caches if required (RedHat)
-      ansible.builtin.yum:
-        update_cache: true
-      when: ansible_os_family == "RedHat"
 
   tasks:
     - name: Install tools
@@ -44,7 +43,23 @@
     - name: Install NodeJS
       ansible.builtin.include_tasks:
         file: tasks/nodejs.yml
-      when: ansible_os_family == "Debian"
+
+    # - name: Install brave
+    #   ansible.builtin.include_tasks:
+    #     file: tasks/brave.yml
+    # NOT TESTED
+
+    - name: Install signal
+      ansible.builtin.include_tasks:
+        file: tasks/signal.yml
+
+    - name: Install spotify
+      ansible.builtin.include_tasks:
+        file: tasks/spotify.yml
+
+    - name: Install flatpak apps
+      ansible.builtin.include_tasks:
+        file: tasks/flathub.yml
 
     - name: Configure Git
       ansible.builtin.include_tasks:

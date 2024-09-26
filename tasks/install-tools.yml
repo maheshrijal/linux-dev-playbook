@@ -20,11 +20,12 @@
       - gpg
       - net-tools
       - zip
-    state: latest
+      - vlc
+    state: present
 
 - name: Upgrade pip
   ansible.builtin.pip:
     name: pip
-    state: latest
+    state: present
   vars:
     ansible_python_interpreter: /usr/bin/python3

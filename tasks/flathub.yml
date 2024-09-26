@@ -1,0 +1,16 @@
+---
+- name: Add or update Flathub remote
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+  become: false
+
+- name: Install packages from flathub
+  community.general.flatpak:
+    name:
+      - org.mozilla.Thunderbird
+      - com.notesnook.Notesnook
+    method: user
+  become: false

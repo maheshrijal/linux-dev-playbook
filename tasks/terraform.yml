@@ -4,20 +4,17 @@
     url: https://apt.releases.hashicorp.com/gpg
     state: present
     keyring: /etc/apt/trusted.gpg.d/hashicorp.gpg
-  when: ansible_os_family == "Debian"
 
 - name: Add hashicorp repository
   ansible.builtin.apt_repository:
     repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
     state: present
-  when: ansible_os_family == "Debian"
 
 - name: Install Terraform
   ansible.builtin.apt:
     name: terraform
     state: present
     update_cache: true
-  when: ansible_os_family == "Debian"
 
 - name: Enable autocomplete for Terraform
   ansible.builtin.lineinfile:

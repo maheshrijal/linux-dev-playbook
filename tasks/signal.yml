@@ -1,0 +1,30 @@
+---
+- name: Download Signal GPG key and add to keyring
+  ansible.builtin.shell:
+    cmd: "wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > /tmp/signal-desktop-keyring.gpg"
+  args:
+    creates: /tmp/signal-desktop-keyring.gpg
+
+- name: Move GPG key to /usr/share/keyrings
+  ansible.builtin.copy:
+    src: /tmp/signal-desktop-keyring.gpg
+    dest: /usr/share/keyrings/signal-desktop-keyring.gpg
+    remote_src: false
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Add Signal repository to apt sources
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main"
+    state: present
+    filename: signal-xenial
+
+- name: Update APT package index
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install Signal Desktop
+  ansible.builtin.apt:
+    name: signal-desktop
+    state: present
