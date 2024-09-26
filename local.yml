@@ -46,6 +46,24 @@
         file: tasks/nodejs.yml
       when: ansible_os_family == "Debian"
 
+    # - name: Install brave
+    #   ansible.builtin.include_tasks:
+    #     file: tasks/brave.yml
+    # NOT TESTED
+
+    - name: Install signal
+      ansible.builtin.include_tasks:
+        file: tasks/signal.yml
+
+    - name: Install spotify
+      ansible.builtin.include_tasks:
+        file: tasks/spotify.yml
+
+    - name: Install flatpak apps
+      ansible.builtin.include_tasks:
+        file: tasks/flathub.yml
+      tags: fresh
+
     - name: Configure Git
       ansible.builtin.include_tasks:
         file: tasks/git.yml

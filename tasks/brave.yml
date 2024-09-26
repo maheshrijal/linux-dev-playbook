@@ -1,0 +1,20 @@
+- name: Download Brave browser GPG key
+  get_url:
+    url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+    dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+    mode: '0644'
+
+- name: Add Brave browser repository
+  lineinfile:
+    path: /etc/apt/sources.list.d/brave-browser-release.list
+    line: "deb [arch=amd64 signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"
+    create: yes
+
+- name: Update APT package index
+  apt:
+    update_cache: yes
+
+- name: Install Brave browser
+  apt:
+    name: brave-browser
+    state: present
