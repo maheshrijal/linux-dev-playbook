@@ -5,7 +5,7 @@
     state: present
     flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
     method: user
-  tags: fresh
+  become: false
 
 - name: Install packages from flathub
   community.general.flatpak:
@@ -13,4 +13,4 @@
       - org.mozilla.Thunderbird
       - com.notesnook.Notesnook
     method: user
-  tags: fresh
+  become: false

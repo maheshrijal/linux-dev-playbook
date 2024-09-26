@@ -62,7 +62,6 @@
     - name: Install flatpak apps
       ansible.builtin.include_tasks:
         file: tasks/flathub.yml
-      tags: fresh
 
     - name: Configure Git
       ansible.builtin.include_tasks:
