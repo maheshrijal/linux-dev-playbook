@@ -6,8 +6,6 @@
       - wget
       - unzip
       - vim
-      - python3
-      - python3-pip
       - htop
       - build-essential
       - lsof
@@ -22,10 +20,3 @@
       - zip
       - vlc
     state: present
-
-- name: Upgrade pip
-  ansible.builtin.pip:
-    name: pip
-    state: present
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
