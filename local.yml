@@ -23,7 +23,7 @@
 
     - name: Set fact if system is WSL
       ansible.builtin.set_fact:
-        is_wsl: "{{ 'Microsoft' in ansible_facts['virtualization_vendor'] }}"
+        is_wsl: "{{ 'WSL' in ansible_kernel }}"
 
   tasks:
     - name: Install tools
