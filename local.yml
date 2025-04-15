@@ -21,6 +21,10 @@
         update_cache: true
         cache_valid_time: 3600
 
+    - name: Set fact if system is WSL
+      ansible.builtin.set_fact:
+        is_wsl: "{{ 'WSL' in ansible_kernel }}"
+
   tasks:
     - name: Install tools
       ansible.builtin.include_tasks:
@@ -52,14 +56,17 @@
     - name: Install signal
       ansible.builtin.include_tasks:
         file: tasks/signal.yml
+      when: not is_wsl
 
     - name: Install spotify
       ansible.builtin.include_tasks:
         file: tasks/spotify.yml
+      when: not is_wsl
 
     - name: Install flatpak apps
       ansible.builtin.include_tasks:
         file: tasks/flathub.yml
+      when: not is_wsl
 
     - name: Configure Git
       ansible.builtin.include_tasks:

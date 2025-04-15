@@ -4,6 +4,7 @@
     cmd: "wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > /tmp/signal-desktop-keyring.gpg"
   args:
     creates: /tmp/signal-desktop-keyring.gpg
+  when: not is_wsl
 
 - name: Move GPG key to /usr/share/keyrings
   ansible.builtin.copy:
@@ -13,18 +14,22 @@
     owner: root
     group: root
     mode: '0644'
+  when: not is_wsl
 
 - name: Add Signal repository to apt sources
   ansible.builtin.apt_repository:
     repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main"
     state: present
     filename: signal-xenial
+  when: not is_wsl
 
 - name: Update APT package index
   ansible.builtin.apt:
     update_cache: true
+  when: not is_wsl
 
 - name: Install Signal Desktop
   ansible.builtin.apt:
     name: signal-desktop
     state: present
+  when: not is_wsl
