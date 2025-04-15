@@ -1,7 +1,14 @@
 ---
-- name: Add Spotify GPG key
-  ansible.builtin.shell: >
-    curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+- name: Download Spotify GPG key
+  ansible.builtin.get_url:
+    url: https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg
+    dest: /tmp/spotify_pubkey.gpg
+    mode: "0644"
+  when: not is_wsl
+
+- name: Add Spotify GPG key to trusted keyring
+  ansible.builtin.command:
+    cmd: gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg /tmp/spotify_pubkey.gpg
   args:
     creates: /etc/apt/trusted.gpg.d/spotify.gpg
   when: not is_wsl
@@ -9,8 +16,9 @@
 - name: Add Spotify repository
   ansible.builtin.lineinfile:
     path: /etc/apt/sources.list.d/spotify.list
-    line: 'deb http://repository.spotify.com stable non-free'
+    line: "deb http://repository.spotify.com stable non-free"
     create: true
+    mode: "0644"
   when: not is_wsl
 
 - name: Update APT package index
