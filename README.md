@@ -1,7 +1,6 @@
 # Linux Development Playbook
 
-This Ansible playbook automates the setup and configuration of Linux and WSL (Windows Subsystem for Linux) for development purposes.
-
+main check 
 ## Getting Started
 
 ### Running Locally
