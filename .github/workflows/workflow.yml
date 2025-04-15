@@ -1,5 +1,4 @@
-# .github/workflows/ansible-lint.yml
-name: ansible-lint
+name: workflow
 on:
   pull_request:
 jobs:
