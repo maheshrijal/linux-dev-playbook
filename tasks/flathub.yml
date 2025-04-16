@@ -6,8 +6,8 @@
     flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
     method: user
   become: false
-  ignore_errors: true
   when: not is_wsl
+  failed_when: false
 
 - name: Install packages from flathub
   community.general.flatpak:
@@ -16,5 +16,5 @@
       - com.notesnook.Notesnook
     method: user
   become: false
-  ignore_errors: true
   when: not is_wsl
+  failed_when: false

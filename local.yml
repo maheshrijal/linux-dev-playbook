@@ -53,6 +53,11 @@
     #     file: tasks/brave.yml
     # NOT TESTED
 
+    - name: Install Vivaldi browser
+      ansible.builtin.include_tasks:
+        file: tasks/vivaldi.yml
+      when: not is_wsl
+
     - name: Install signal
       ansible.builtin.include_tasks:
         file: tasks/signal.yml
