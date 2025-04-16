@@ -43,15 +43,9 @@
       ansible.builtin.include_tasks:
         file: tasks/terraform.yml
 
-    # - name: Install NodeJS
-    #   ansible.builtin.include_tasks:
-    #     file: tasks/nodejs.yml
-    # need to fix
-
-    # - name: Install brave
-    #   ansible.builtin.include_tasks:
-    #     file: tasks/brave.yml
-    # NOT TESTED
+    - name: Install NodeJS
+      ansible.builtin.include_tasks:
+        file: tasks/nodejs.yml
 
     - name: Install Vivaldi browser
       ansible.builtin.include_tasks:
@@ -72,6 +66,10 @@
       ansible.builtin.include_tasks:
         file: tasks/flathub.yml
       when: not is_wsl
+
+    - name: Install GitHub CLI
+      ansible.builtin.include_tasks:
+        file: tasks/githubcli.yml
 
     - name: Configure Git
       ansible.builtin.include_tasks:

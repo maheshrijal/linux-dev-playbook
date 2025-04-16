@@ -2,11 +2,7 @@
 download_dir: /tmp
 go_install_path: /usr/local/go
 
-# goversion: "1.20"
-# terraform_version: "1.5.2"
-# node_version: "20.x" # remove node temporarily
-
 # Git configuration
-email: "62394512+maheshrijal@users.noreply.github.com"
-key_name: "gh"
-git_username: "maheshrijal"
+email: "62394512+maheshrijal@users.noreply.github.com" # This is no-reply email used for git commits. Different for every github user. 
+key_name: "gh" # This  SSH key will be generated when the playbook is run and soted in ~/.ssh directory
+git_username: "maheshrijal" # This is the github username. It will be used to generate the SSH key and also for git config

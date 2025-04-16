@@ -1,20 +1,28 @@
 ---
+- name: Check if Terraform is already installed
+  ansible.builtin.stat:
+    path: /usr/bin/terraform
+  register: terraform_bin
+
 - name: Add hashicorp GPG key
   ansible.builtin.apt_key:
     url: https://apt.releases.hashicorp.com/gpg
     state: present
     keyring: /etc/apt/trusted.gpg.d/hashicorp.gpg
+  when: not terraform_bin.stat.exists
 
 - name: Add hashicorp repository
   ansible.builtin.apt_repository:
     repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
     state: present
+  when: not terraform_bin.stat.exists
 
 - name: Install Terraform
   ansible.builtin.apt:
     name: terraform
     state: present
     update_cache: true
+  when: not terraform_bin.stat.exists
 
 - name: Enable autocomplete for Terraform
   ansible.builtin.lineinfile:
@@ -23,6 +31,7 @@
     create: true
     state: present
     mode: "0644"
+  when: not terraform_bin.stat.exists
 
 - name: Verify Terraform installation
   ansible.builtin.command: "terraform version"
