@@ -1,7 +1,14 @@
 ---
-- name: Download Signal GPG key and add to keyring
-  ansible.builtin.shell:
-    cmd: "wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > /tmp/signal-desktop-keyring.gpg"
+- name: Download Signal GPG key
+  ansible.builtin.get_url:
+    url: https://updates.signal.org/desktop/apt/keys.asc
+    dest: /tmp/signal-desktop-keyring.asc
+    mode: '0644'
+  when: not is_wsl
+
+- name: Convert Signal GPG key to keyring
+  ansible.builtin.command: >
+    bash -o pipefail -c 'gpg --dearmor < /tmp/signal-desktop-keyring.asc > /tmp/signal-desktop-keyring.gpg'
   args:
     creates: /tmp/signal-desktop-keyring.gpg
   when: not is_wsl
