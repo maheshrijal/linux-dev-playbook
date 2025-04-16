@@ -19,10 +19,12 @@
     url: https://go.dev/dl/?mode=json
     return_content: true
   register: go_download_json
+  when: not go_installed.stat.exists
 
 - name: Extract latest Go version
   ansible.builtin.set_fact:
     latest_go_version: "{{ go_download_json.json[0].version }}"
+  when: not go_installed.stat.exists
 
 - name: Create download directory
   ansible.builtin.file:

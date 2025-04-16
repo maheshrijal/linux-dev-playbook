@@ -1,0 +1,57 @@
+---
+- name: Check if GitHub CLI is already installed
+  ansible.builtin.stat:
+    path: /usr/bin/gh
+  register: gh_installed
+  changed_when: false
+  become: false
+
+- name: Ensure wget is installed
+  ansible.builtin.apt:
+    name: wget
+    state: present
+    update_cache: true
+  when: not gh_installed.stat.exists
+
+- name: Create /etc/apt/keyrings directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  when: not gh_installed.stat.exists
+
+- name: Download GitHub CLI GPG key
+  ansible.builtin.get_url:
+    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    dest: /etc/apt/keyrings/githubcli-archive-keyring.gpg
+    mode: '0644'
+  when: not gh_installed.stat.exists
+
+- name: Add GitHub CLI repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+    filename: github-cli
+    state: present
+  when: not gh_installed.stat.exists
+
+- name: Update APT package index
+  ansible.builtin.apt:
+    update_cache: true
+  when: not gh_installed.stat.exists
+
+- name: Install GitHub CLI
+  ansible.builtin.apt:
+    name: gh
+    state: present
+  when: not gh_installed.stat.exists
+
+- name: Verify GitHub CLI installation
+  ansible.builtin.command: gh --version
+  register: gh_version
+  ignore_errors: true
+  changed_when: false
+  failed_when: "'error' in gh_version.stderr"
+
+- name: Print GitHub CLI version
+  ansible.builtin.debug:
+    msg: "{{ gh_version.stdout }}"
