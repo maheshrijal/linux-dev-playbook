@@ -34,7 +34,7 @@ To run the playbook directly on a remote machine, you can use the `ansible-pull 
 ansible-pull -U https://github.com/maheshrijal/linux-dev-playbook.git -K
 ```
 
-`ansible-pull` must be present in path for this to work. All ansible binaries can be install with this [shell script](https://github.com/maheshrijal/shell-scripts).
+`ansible-pull` must be present in path for this to work. Install ansible following [these steps](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). 
 
 ## Features
 
