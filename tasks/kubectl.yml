@@ -51,26 +51,6 @@
         path: /tmp/kubernetes-apt-keyring.asc
         state: absent
 
-- name: Install kubectl for Red Hat-based systems
-  when: ansible_os_family == "RedHat"
-  become: true
-  block:
-    - name: Add Kubernetes yum repository
-      ansible.builtin.yum_repository:
-        name: kubernetes
-        description: Kubernetes
-        baseurl: https://pkgs.k8s.io/core:/stable:/v1.30/rpm/
-        gpgkey: https://pkgs.k8s.io/core:/stable:/v1.30/rpm/repodata/repomd.xml.key
-        gpgcheck: true
-        enabled: true
-        state: present
-
-    - name: Install kubectl using yum
-      ansible.builtin.dnf:
-        name: kubectl
-        state: present
-        disable_gpg_check: false # Ensure GPG check is enabled
-
 # Bash completion tasks - to be handled in a subsequent step, kept for now
 - name: Install bash-completion
   ansible.builtin.package:
