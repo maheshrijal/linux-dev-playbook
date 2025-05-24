@@ -1,0 +1,39 @@
+- name: Download latest kubectl binary
+  ansible.builtin.get_url:
+    url: "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    dest: "/tmp/kubectl"
+    mode: '0755'
+
+- name: Move kubectl binary to /usr/local/bin
+  ansible.builtin.copy:
+    src: "/tmp/kubectl"
+    dest: "/usr/local/bin/kubectl"
+    mode: '0755'
+    remote_src: true
+  become: true
+
+- name: Install bash-completion
+  ansible.builtin.package:
+    name: bash-completion
+    state: present
+  become: true
+
+- name: Ensure bash-completion directory exists
+  ansible.builtin.file:
+    path: /etc/bash_completion.d
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Get kubectl bash completion script
+  ansible.builtin.command:
+    cmd: kubectl completion bash
+  register: kubectl_completion_script
+  changed_when: false # This command does not change state, only retrieves info
+
+- name: Install kubectl bash completion script
+  ansible.builtin.copy:
+    content: "{{ kubectl_completion_script.stdout }}"
+    dest: /etc/bash_completion.d/kubectl
+    mode: '0644'
+  become: true

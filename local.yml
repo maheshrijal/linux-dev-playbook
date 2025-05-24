@@ -71,6 +71,10 @@
       ansible.builtin.include_tasks:
         file: tasks/githubcli.yml
 
+    - name: Install Kubectl
+      ansible.builtin.include_tasks:
+        file: tasks/kubectl.yml
+
     - name: Configure Git
       ansible.builtin.include_tasks:
         file: tasks/git.yml
