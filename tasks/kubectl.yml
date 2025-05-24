@@ -1,0 +1,70 @@
+- name: Install kubectl for Debian-based systems
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+    - name: Update apt package index and install prerequisites for Kubernetes apt repository
+      ansible.builtin.apt:
+        update_cache: true
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+        state: present
+
+    - name: Ensure /etc/apt/keyrings directory exists
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Download Kubernetes apt key as ASCII
+      ansible.builtin.get_url:
+        url: https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key
+        dest: /tmp/kubernetes-apt-keyring.asc
+        mode: '0644'
+
+    - name: Dearmor Kubernetes apt key
+      ansible.builtin.command:
+        cmd: gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg /tmp/kubernetes-apt-keyring.asc
+        creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Set permissions for dearmored Kubernetes apt key
+      ansible.builtin.file:
+        path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+        mode: '0644'
+
+    - name: Add Kubernetes apt repository
+      ansible.builtin.apt_repository:
+        repo: 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /'
+        state: present
+        filename: kubernetes
+
+    - name: Install kubectl using apt
+      ansible.builtin.apt:
+        name: kubectl
+        state: present
+        update_cache: true # It's good practice to update cache before installing a specific version or new package
+
+    - name: Remove temporary Kubernetes apt key ASCII file
+      ansible.builtin.file:
+        path: /tmp/kubernetes-apt-keyring.asc
+        state: absent
+
+# Bash completion tasks - to be handled in a subsequent step, kept for now
+- name: Install bash-completion
+  ansible.builtin.package:
+    name: bash-completion
+    state: present
+  become: true
+
+- name: Configure kubectl alias and bash completion in ~/.bashrc
+  ansible.builtin.blockinfile:
+    path: ~/.bashrc
+    create: true # Create .bashrc if it doesn't exist
+    mode: '0644'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - kubectl alias and completion"
+    block: |
+      alias k=kubectl
+      source <(kubectl completion bash)
+      complete -o default -F __start_kubectl k
